@@ -6,13 +6,13 @@ const ROWS: usize = 600;
 const COLS: usize = 600;
 
 fn main() {
-    
     //check command line arguments
     let print_result = false;
-    let mut option: usize = 1;
+    let mut option:usize = 1;
 
     let args: Vec<String> = env::args().collect();
     if args.len() > 1 {
+
         match args[1].parse::<usize>() {
             Ok(number) => {
                 option = number;
@@ -21,23 +21,23 @@ fn main() {
                 eprintln!("Parameter passed to run the program is not a valid number");
                 return;
             }
-        }
+        }    
     }
 
     //print welcome message
     print_welcome_message();
-    
 
-    //declare matrices using vectors
-    let mut a_matrix: Vec<Vec<i32>> = vec![vec![0; COLS]; ROWS];
-    let mut b_matrix: Vec<Vec<i32>> = vec![vec![0; COLS]; ROWS];
-    let mut result_matrix_basic: Vec<Vec<i32>> = vec![vec![0; COLS]; ROWS];
-    let mut result_matrix_inverted_loop: Vec<Vec<i32>> = vec![vec![0; COLS]; ROWS];
-    let mut result_matrix_tiled: Vec<Vec<i32>> = vec![vec![0; COLS]; ROWS];
+    //declare matrices using arrays
+    let mut a_matrix : [[i32; COLS]; ROWS] = [[0; COLS];ROWS];
+    let mut b_matrix : [[i32; COLS]; ROWS] = [[0; COLS];ROWS];
+    let mut result_matrix_basic: [[i32; COLS]; ROWS] = [[0; COLS];ROWS];
+    let mut result_matrix_inverted_loop: [[i32; COLS]; ROWS] = [[0; COLS];ROWS];
+    let mut result_matrix_tiled: [[i32; COLS]; ROWS] = [[0; COLS];ROWS];
 
     //populate matrices a and b
     matrix_populate(&mut a_matrix);
     matrix_populate(&mut b_matrix);
+
 
     //multiply the matrices based on the option passed as a parameter during program spawn
     if option == 1 {
@@ -47,22 +47,23 @@ fn main() {
         );
         println!("-----------------------------------------------------------------------");
         basic_matrix_multiply(&a_matrix, &b_matrix, &mut result_matrix_basic);
-    } else if option == 2 {
+    }
+    else if option == 2 {
         println!(
             "You have chosen option {} : Inverted loop matrix multiplication",
             option
         );
         println!("-----------------------------------------------------------------------");
         inverted_loop_matrix_multiply(&a_matrix, &b_matrix, &mut result_matrix_inverted_loop);
-    } else {
+    }
+    else {
         println!(
             "You have chosen option {} : Tiled matrix multiplication",
             option
         );
-        println!("-----------------------------------------------------------------------");
         tiled_matrix_mutiply(&a_matrix, &b_matrix, &mut result_matrix_tiled);
     }
-
+    
     //print results
     if print_result {
         println!("Printing result_matrix_basic");
@@ -76,7 +77,7 @@ fn main() {
     }
 }
 
-fn matrix_populate(matrix: &mut [Vec<i32>]) {
+fn matrix_populate(matrix: &mut [[i32; COLS];ROWS]) {
     let mut rng = rand::thread_rng();
     for i in 0..ROWS {
         for j in 0..COLS {
@@ -88,7 +89,7 @@ fn matrix_populate(matrix: &mut [Vec<i32>]) {
 fn print_welcome_message() {
 
     println!("-----------------------------------------------------------------------");
-    println!("Welcome to the rusty matrix multiplication implementation using Vectors");
+    println!("Welcome to the rusty matrix multiplication implementation using Arrays");
     println!("-----------------------------------------------------------------------");
     println!(
         "Our input and result matrices have {} rows and {} columns ",
@@ -97,7 +98,7 @@ fn print_welcome_message() {
     println!("-----------------------------------------------------------------------");
 }
 
-fn matrix_print(matrix: &[Vec<i32>]) {
+fn matrix_print(matrix: & [[i32; COLS];ROWS]) {
     println!("...................................................");
     for i in 0..ROWS {
         for j in 0..COLS {
@@ -108,9 +109,9 @@ fn matrix_print(matrix: &[Vec<i32>]) {
 }
 
 fn basic_matrix_multiply(
-    a_matrix: &[Vec<i32>],
-    b_matrix: &[Vec<i32>],
-    result_matrix: &mut [Vec<i32>],
+    a_matrix: &[[i32; COLS];ROWS],
+    b_matrix: &[[i32; COLS];ROWS],
+    result_matrix: &mut [[i32; COLS];ROWS],
 ) {
     let start_time = Instant::now();
 
@@ -132,9 +133,9 @@ fn basic_matrix_multiply(
 }
 
 fn inverted_loop_matrix_multiply(
-    a_matrix: &[Vec<i32>],
-    b_matrix: &[Vec<i32>],
-    result_matrix: &mut [Vec<i32>],
+    a_matrix: &[[i32; COLS];ROWS],
+    b_matrix: &[[i32; COLS];ROWS],
+    result_matrix: &mut [[i32; COLS];ROWS],
 ) {
     let start_time = Instant::now();
 
@@ -156,9 +157,9 @@ fn inverted_loop_matrix_multiply(
 }
 
 fn tiled_matrix_mutiply(
-    a_matrix: &[Vec<i32>],
-    b_matrix: &[Vec<i32>],
-    result_matrix: &mut [Vec<i32>],
+    a_matrix: &[[i32; COLS];ROWS],
+    b_matrix: &[[i32; COLS];ROWS],
+    result_matrix: &mut [[i32; COLS];ROWS],
 ) {
     let start_time = Instant::now();
     let tile_size = 4;
