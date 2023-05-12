@@ -1,5 +1,5 @@
 [package]
-name = "rusty_matmultiply"
+name = "rusty_matmultiply_vectors"
 version = "0.1.0"
 edition = "2021"
 
